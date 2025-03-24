@@ -1,3 +1,5 @@
+// display para exibir a idade
+
 import DisplayIdade from "./DisplayIdade";
 import PropTypes from "prop-types";
 

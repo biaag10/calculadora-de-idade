@@ -1,6 +1,8 @@
 import { useSpring, animated } from "@react-spring/web";
 import PropTypes from "prop-types";
 
+// faz a mudança dos valores, atualização
+
 const DisplayIdade = ({ label, value }) => {
   const ehZero = value === 0;
   const { number } = useSpring({ number: value, from: { number: 0 } });

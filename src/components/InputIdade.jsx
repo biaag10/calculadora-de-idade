@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 
+// entrada de dados
+
 const InputIdade = ({ name, label, placeholder, value, onChange, error }) => {
   return (
     <div className="flex flex-col gap-1 md:gap-2">

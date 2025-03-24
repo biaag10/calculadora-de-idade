@@ -1,11 +1,6 @@
 import InputIdade from "./InputIdade";
 import IconArrow from "../assets/images/icon-arrow.svg";
 import { useState } from "react";
-// import PropTypes from "prop-types";
-
-// IdadeForm.propTypes = {
-//   setIdadeResultado: PropTypes.func.isRequired,
-// };
 
 const IdadeForm = ({ setIdadeResultado }) => {
   const [dia, setDia] = useState("");
@@ -17,26 +12,34 @@ const IdadeForm = ({ setIdadeResultado }) => {
     e.preventDefault();
     if (validacao()) {
       const resultado = calcularIdade(dia, mes, ano);
-
       setIdadeResultado(resultado);
     }
   };
 
   const validarData = (dia, mes, ano) => {
     const inputData = new Date(ano, mes - 1, dia);
+    const dataAtual = new Date();
+
+    // Verifica se a data é válida
     if (
       inputData.getDate() !== parseInt(dia) ||
       inputData.getMonth() + 1 !== parseInt(mes) ||
       inputData.getFullYear() !== parseInt(ano)
     ) {
-      return false;
+      return false; // Data inválida
     }
+
+    // Verifica se a data está no futuro
+    if (inputData > dataAtual) {
+      return false; // Data futura
+    }
+
     return true;
   };
 
   const validacao = () => {
     let errosDados = { dia: "", mes: "", ano: "" };
-    const currentYear = new Date().getFullYear();
+    const anoAtual = new Date().getFullYear();
 
     if (!dia) errosDados.dia = "Este campo é obrigatório!";
     else if (!/^(0?[1-9]|[12][0-9]|3[01])$/.test(dia))
@@ -48,11 +51,11 @@ const IdadeForm = ({ setIdadeResultado }) => {
 
     if (!ano) errosDados.ano = "Este campo é obrigatório!";
     else if (!/^[0-9]{4}$/.test(ano))
-      errosDados.year = "O ano deve ter 4 dígitos!";
-    else if (parseInt(ano) > currentYear)
-      errosDados.year =  "Nao pode ser maior que o ano atual!";
+      errosDados.ano = "O ano deve ter 4 dígitos!";
+    else if (parseInt(ano) > anoAtual)
+      errosDados.ano = "Não pode ser maior que o ano atual!";
     else if (!validarData(dia, mes, ano))
-      errosDados.day = "A data é invalida!";
+      errosDados.dia = "A data é inválida!";
 
     setErros(errosDados);
     return Object.values(errosDados).every((x) => x === "");
@@ -60,20 +63,38 @@ const IdadeForm = ({ setIdadeResultado }) => {
 
   const calcularIdade = (dia, mes, ano) => {
     const dataAniversario = new Date(ano, mes - 1, dia);
-    const currentDate = new Date();
+    const dataAtual = new Date();
 
-    let idadeAno = currentDate.getFullYear() - dataAniversario.getFullYear();
-    let idadeMes = currentDate.getMonth() - dataAniversario.getMonth();
-    let idadeDia = currentDate.getDate() - dataAniversario.getDate();
+    // Se a data de nascimento for maior que a data atual, retorna idade zero
+    if (dataAniversario > dataAtual) {
+      return {
+        anos: 0,
+        meses: 0,
+        dias: 0,
+      };
+    }
 
+    let idadeAno = dataAtual.getFullYear() - dataAniversario.getFullYear();
+    let idadeMes = dataAtual.getMonth() - dataAniversario.getMonth();
+    let idadeDia = dataAtual.getDate() - dataAniversario.getDate();
+
+    // Ajuste para quando o dia é menor que o dia atual (ajustar os meses)
     if (idadeDia < 0) {
       idadeMes--;
       idadeDia += new Date(ano, mes, 0).getDate();
     }
 
+    // Ajuste para quando o mês é menor que o mês atual (ajustar os anos)
     if (idadeMes < 0) {
       idadeAno--;
       idadeMes += 12;
+    }
+
+    // Garante que a idade não seja negativa
+    if (idadeAno < 0) {
+      idadeAno = 0;
+      idadeMes = 0;
+      idadeDia = 0;
     }
 
     return {
@@ -88,19 +109,19 @@ const IdadeForm = ({ setIdadeResultado }) => {
       <div className="flex gap-4 text-smokey-grey font-bold sm:gap-8">
         <InputIdade
           type="text"
-          name="day"
-          id="day"
+          name="dia"
+          id="dia"
           label="dia"
           placeholder="DD"
           value={dia}
           onChange={(e) => setDia(e.target.value)}
-          error={erros.day}
+          error={erros.dia}
         />
         <InputIdade
           type="text"
-          name="month"
-          id="month"
-          label="mes"
+          name="mes"
+          id="mes"
+          label="mês"
           placeholder="MM"
           value={mes}
           onChange={(e) => setMes(e.target.value)}
@@ -108,8 +129,8 @@ const IdadeForm = ({ setIdadeResultado }) => {
         />
         <InputIdade
           type="text"
-          name="year"
-          id="year"
+          name="ano"
+          id="ano"
           label="ano"
           placeholder="AAAA"
           value={ano}

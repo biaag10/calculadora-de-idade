@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 
+sm: a partir de 640px de largura para cima 
+md: a partir de 768px de largura para cima 
+lg: a partir de 1024px de largura para cima 
+*/
+
 @layer base {
   body {
     @apply min-h-screen font-poppins font-normal bg-black pt-[88px] px-4 
