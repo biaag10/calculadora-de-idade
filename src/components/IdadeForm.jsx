@@ -58,16 +58,19 @@ const IdadeForm = ({ setIdadeResultado }) => {
 
     // valida o campo 'dia'
     if (!dia) errosDados.dia = "Este campo é obrigatório!";
+    // permite dias de 1 a 9, permite dias de 10 a 29 e permite dias 30 e 31
     else if (!/^(0?[1-9]|[12][0-9]|3[01])$/.test(dia))
       errosDados.dia = "Deve ser um dia válido!";
 
     // valida o campo mes
     if (!mes) errosDados.mes = "Este campo é obrigatório!";
+    // permite meses de 1 a 9 e permite meses de 10 a 12
     else if (!/^(0?[1-9]|1[0-2])$/.test(mes))
       errosDados.mes = "Deve ser um mês válido!";
 
     // valida o campo ano
     if (!ano) errosDados.ano = "Este campo é obrigatório!";
+    // permite anos de 4 dígitos e de 0 a 9 
     else if (!/^[0-9]{4}$/.test(ano))
       errosDados.ano = "O ano deve ter 4 dígitos!";
     else if (parseInt(ano) > anoAtual)
