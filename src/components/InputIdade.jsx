@@ -23,7 +23,7 @@ const InputIdade = ({ name, label, placeholder, value, onChange, error }) => {
   );
 };
 
-// Definição das propTypes
+// definição das propTypes
 InputIdade.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,

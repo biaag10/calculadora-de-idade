@@ -1,4 +1,5 @@
-// display para exibir a idade
+// display para exibir a idade calculada
+// usa o componente "DisplayIdade" para exibir cada uma das informações 
 
 import DisplayIdade from "./DisplayIdade";
 import PropTypes from "prop-types";
@@ -13,7 +14,7 @@ const Display = ({ anos, meses, dias }) => {
   );
 };
 
-// Definição das propTypes
+// definição das propTypes
 Display.propTypes = {
   anos: PropTypes.number.isRequired,
   meses: PropTypes.number.isRequired,
